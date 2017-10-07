@@ -8,6 +8,8 @@
 #
 #   Created: 30/11/2014 Elena Graverini (elena.graverini@cern.ch)
 #
+#   Updated: 07/10/2017 Kyrylo Bondarenko (bondarenko@lorentz.leidenuniv.nl)
+#
 #   Sample usage:
 #     ipython -i hnl.py
 #     In [1]: b = HNL(1.,[1.e-8, 2.e-8, 1.e-9],True)
@@ -134,18 +136,48 @@ class HNLbranchings():
                         (5,2):self.CKM.Vts**2., (2,5):self.CKM.Vts**2.,
                         (5,4):self.CKM.Vtb**2., (4,5):self.CKM.Vtb**2.}
         self.decays = [ 'N -> nu nu nu',
-                        'N -> e- e+ nu_e', 'N -> e- e+ nu_mu', 'N -> e- e+ nu_tau',
-                        'N -> e+ mu- nu_e', 'N -> e- mu+ nu_mu',
-                        'N -> mu- mu+ nu_e', 'N -> mu- mu+ nu_mu', 'N -> mu- mu+ nu_tau',
-                        'N -> tau- tau+ nu_e', 'N -> tau- tau+ nu_mu', 'N -> tau- tau+ nu_tau', 
-                        'N -> e+ tau- nu_e', 'N -> e- tau+ nu_tau', 
-                        'N -> mu+ tau- nu_mu', 'N -> mu- tau+ nu_tau', 
-                        'N -> pi0 nu_e', 'N -> pi0 nu_mu', 'N -> pi0 nu_tau', 
+                        'N -> e- e+ nu_e',
+                        'N -> e- e+ nu_mu',
+                        'N -> e- e+ nu_tau',
+                        'N -> e- mu+ nu_mu',
+                        'N -> mu- e+ nu_e',
+                        'N -> pi0 nu_e',
+                        'N -> pi0 nu_mu',
+                        'N -> pi0 nu_tau',
                         'N -> pi+ e-',
+                        'N -> mu- mu+ nu_e',
+                        'N -> mu- mu+ nu_mu',
+                        'N -> mu- mu+ nu_tau',
                         'N -> pi+ mu-',
-                        'N -> rho0 nu_e', 'N -> rho0 nu_mu', 'N -> rho0 nu_tau', 
+                        'N -> eta nu_e',
+                        'N -> eta nu_mu',
+                        'N -> eta nu_tau',
+                        'N -> rho0 nu_e',
+                        'N -> rho0 nu_mu',
+                        'N -> rho0 nu_tau',
                         'N -> rho+ e-',
-                        'N -> rho+ mu-' ]
+                        'N -> omega nu_e',
+                        'N -> omega nu_mu',
+                        'N -> omega nu_tau',
+                        'N -> rho+ mu-',
+                        'N -> eta1 nu_e',
+                        'N -> eta1 nu_mu',
+                        'N -> eta1 nu_tau',
+                        'N -> phi nu_e',
+                        'N -> phi nu_mu',
+                        'N -> phi nu_tau',
+                        'N -> e- tau+ nu_tau',
+                        'N -> tau- e+ nu_e',
+                        'N -> mu- tau+ nu_tau',
+                        'N -> tau- mu+ nu_mu',
+                        'N -> D_s+ e-',
+                        'N -> D_s+ mu-',
+                        'N -> D*_s+ e-',
+                        'N -> D*_s+ mu-',
+                        'N -> eta_c nu_e',
+                        'N -> eta_c nu_mu',
+                        'N -> eta_c nu_tau' ]
+            
         if debug:
             print "HNLbranchings instance initialized with couplings:"
             print "\tU2e   = %s"%self.U2[0]
@@ -361,43 +393,68 @@ class HNLbranchings():
         """
         m = self.MN
         allowedDecays = {'N -> nu nu nu':'yes'}
-        if m > 2.*mass('e'):
+        if m > 2.*mass('e-'):
             allowedDecays.update({'N -> e- e+ nu_e':'yes'})
             allowedDecays.update({'N -> e- e+ nu_mu':'yes'})
             allowedDecays.update({'N -> e- e+ nu_tau':'yes'})
-            if m > mass('e') + mass('mu'):
-                allowedDecays.update({'N -> e+ mu- nu_e':'yes'})
-                allowedDecays.update({'N -> e- mu+ nu_mu':'yes'})
-            if m > mass('pi0'):
-                allowedDecays.update({'N -> pi0 nu_e':'yes'})
-                allowedDecays.update({'N -> pi0 nu_mu':'yes'})
-                allowedDecays.update({'N -> pi0 nu_tau':'yes'})
-            if m > mass('pi') + mass('e'):
-                allowedDecays.update({'N -> pi+ e-':'yes'})
-                if m > 2.*mass('mu'):
-                    allowedDecays.update({'N -> mu- mu+ nu_e':'yes'})
-                    allowedDecays.update({'N -> mu- mu+ nu_mu':'yes'})
-                    allowedDecays.update({'N -> mu- mu+ nu_tau':'yes'})
-                    if m > mass('pi') + mass('mu'):
-                        allowedDecays.update({'N -> pi+ mu-':'yes'})
-                        if m > mass('rho0'):
-                            allowedDecays.update({'N -> rho0 nu_e':'yes'})
-                            allowedDecays.update({'N -> rho0 nu_mu':'yes'})
-                            allowedDecays.update({'N -> rho0 nu_tau':'yes'})
-                        if m > mass('rho') + mass('e'):
-                            allowedDecays.update({'N -> rho+ e-':'yes'})
-                            if m > mass('rho') + mass('mu'):
-                                allowedDecays.update({'N -> rho+ mu-':'yes'})
-                                if m > mass('e') + mass('tau'):
-                                    allowedDecays.update({'N -> e+ tau- nu_e':'yes'})
-                                    allowedDecays.update({'N -> e- tau+ nu_tau':'yes'})
-                                    if m > mass('mu') + mass('tau'):
-                                        allowedDecays.update({'N -> mu+ tau- nu_mu':'yes'})
-                                        allowedDecays.update({'N -> mu- tau+ nu_tau':'yes'})
-                                        if m > 2.*mass('tau'):
-                                            allowedDecays.update({'N -> tau- tau+ nu_e':'yes'})
-                                            allowedDecays.update({'N -> tau- tau+ nu_mu':'yes'})
-                                            allowedDecays.update({'N -> tau- tau+ nu_tau':'yes'})
+        if m > mass('e-') + mass('mu-'):
+            allowedDecays.update({'N -> e- mu+ nu_mu':'yes'})
+            allowedDecays.update({'N -> mu- e+ nu_e':'yes'})
+        if m > mass('pi0'):
+            allowedDecays.update({'N -> pi0 nu_e':'yes'})
+            allowedDecays.update({'N -> pi0 nu_mu':'yes'})
+            allowedDecays.update({'N -> pi0 nu_tau':'yes'})
+        if m > mass('pi+') + mass('e-'):
+            allowedDecays.update({'N -> pi+ e-':'yes'})
+        if m > 2.*mass('mu-'):
+            allowedDecays.update({'N -> mu- mu+ nu_e':'yes'})
+            allowedDecays.update({'N -> mu- mu+ nu_mu':'yes'})
+            allowedDecays.update({'N -> mu- mu+ nu_tau':'yes'})
+        if m > mass('pi+') + mass('mu-'):
+            allowedDecays.update({'N -> pi+ mu-':'yes'})
+        if m > mass('eta'):
+            allowedDecays.update({'N -> eta nu_e':'yes'})
+            allowedDecays.update({'N -> eta nu_mu':'yes'})
+            allowedDecays.update({'N -> eta nu_tau':'yes'})
+        if m > mass('rho0'):
+            allowedDecays.update({'N -> rho0 nu_e':'yes'})
+            allowedDecays.update({'N -> rho0 nu_mu':'yes'})
+            allowedDecays.update({'N -> rho0 nu_tau':'yes'})
+        if m > mass('rho+') + mass('e-'):
+            allowedDecays.update({'N -> rho+ e-':'yes'})
+        if m > mass('omega'):
+            allowedDecays.update({'N -> omega nu_e':'yes'})
+            allowedDecays.update({'N -> omega nu_mu':'yes'})
+            allowedDecays.update({'N -> omega nu_tau':'yes'})
+        if m > mass('rho+') + mass('mu-'):
+            allowedDecays.update({'N -> rho+ mu-':'yes'})
+        if m > mass('eta1'):
+            allowedDecays.update({'N -> eta1 nu_e':'yes'})
+            allowedDecays.update({'N -> eta1 nu_mu':'yes'})
+            allowedDecays.update({'N -> eta1 nu_tau':'yes'})
+        if m > mass('phi'):
+            allowedDecays.update({'N -> phi nu_e':'yes'})
+            allowedDecays.update({'N -> phi nu_mu':'yes'})
+            allowedDecays.update({'N -> phi nu_tau':'yes'})
+        if m > mass('e-') + mass('tau-'):
+            allowedDecays.update({'N -> e- tau+ nu_tau':'yes'})
+            allowedDecays.update({'N -> tau- e+ nu_e':'yes'})
+        if m > mass('mu-') + mass('tau-'):
+            allowedDecays.update({'N -> mu- tau+ nu_tau':'yes'})
+            allowedDecays.update({'N -> tau- mu+ nu_mu':'yes'})
+        if m > mass('D_s+') + mass('e-'):
+            allowedDecays.update({'N -> D_s+ e-':'yes'})
+        if m > mass('D_s+') + mass('mu-'):
+            allowedDecays.update({'N -> D_s+ mu-':'yes'})
+        if m > mass('D*_s+') + mass('e-'):
+            allowedDecays.update({'N -> D*_s+ e-':'yes'})
+        if m > mass('D*_s+') + mass('mu-'):
+            allowedDecays.update({'N -> D*_s+ mu-':'yes'})
+        if m > mass('eta_c'):
+            allowedDecays.update({'N -> eta_c nu_e':'yes'})
+            allowedDecays.update({'N -> eta_c nu_mu':'yes'})
+            allowedDecays.update({'N -> eta_c nu_tau':'yes'})
+       
         for decay in self.decays:
             if decay not in allowedDecays:
                 allowedDecays.update({decay:'no'})
