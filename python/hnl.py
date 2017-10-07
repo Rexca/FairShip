@@ -46,7 +46,7 @@ def PDGname(particle):
     if '1' in particle:
         particle = particle.replace('1',"'")
     if (not (('-' in particle) or ('+' in particle) or ('0' in particle)
-             or ('nu_' in particle) or ('eta' in particle))
+             or ('nu_' in particle) or ('eta' in particle) or ('omega' in particle) or ('phi' in particle))
         and (particle not in ['d','u','s','c','b','t'])):
         particle += '+'
     return particle
