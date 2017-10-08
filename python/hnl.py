@@ -36,21 +36,11 @@ pdg = ROOT.TDatabasePDG.Instance()
 
 def PDGname(particle):
     """
-    Trim particle name for use with the PDG database
+    Change particle name for use with the PDG database
     """
-    if 'down' in particle: return 'd'
-    if 'up' in particle: return 'u'
-    if 'strange' in particle: return 's'
-    if 'charm' in particle: return 'c'
-    if 'bottom' in particle: return 'b'
-    if 'beauty' in particle: return 'b'
-    if 'top' in particle: return 't'
     if '1' in particle:
         particle = particle.replace('1',"'")
-    if (not (('-' in particle) or ('+' in particle) or ('0' in particle)
-             or ('nu_' in particle) or ('eta' in particle) or ('omega' in particle) or ('phi' in particle))
-        and (particle not in ['d','u','s','c','b','t'])):
-        particle += '+'
+    if particle == 'nu': return 'nu_e' # simple workaround to handle 3nu channel
     return particle
 
 def mass(particle):
