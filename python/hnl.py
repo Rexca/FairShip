@@ -28,7 +28,7 @@
 """
 
 import math
-import ROOT
+import ROOT, os
 import shipunit as u
 
 # Load PDG database
@@ -192,7 +192,7 @@ class HNLbranchings():
         """
         Returns 3-loops QCD correction to HNL decay width into quarks
         """
-        alpha_s = ROOT.TGraph("alpha_s.dat")
+        alpha_s = ROOT.TGraph( os.path.expandvars('$FAIRSHIP/python/alpha_s.dat') )
         a_s = alpha_s.Eval(self.MN)
         qcd_corr = a_s / math.pi
         qcd_corr += 5.2 * (a_s / math.pi)**2.
